@@ -119,7 +119,7 @@ void analy_flop(char *str)
     }
 }
 
-/*解析请求消息，用数组分别保存Pid, Jetton, Money, Bet信息，方便策略函数传参调用*/
+/*解析请求消息，用数组分别保存Pid, Jetton, Money, Bet, Action, Pot信息，方便策略函数传参调用*/
 char Pid[10] = {'\0'};
 char Jetton[10] = {'\0'};
 char Money[10] = {'\0'};
