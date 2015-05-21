@@ -133,7 +133,9 @@ void analy_inquire(char *str)
     /*用“ ”分割buffer信息*/
     char *delim = " ";
     /*假设我们的程序*/
-    char str_pid[] = {"\n8888"};
+    char str_pid[] = {"\n1111"};
+    char str_pot[] = {"\ntotal"};
+    
     strtok(str, delim);
     while ( (ptr = strtok(NULL, delim)) != NULL )
     {
@@ -173,16 +175,25 @@ void analy_inquire(char *str)
             }
             printf("\n");
             
-            /*跳过“ blind \ntotal pot: ”，直接读取pot数值*/
-            ptr += 19;
+            ++ptr;
+            printf("Action:");
+            for (i = 0; *ptr != ' '; ++ptr, ++i) {
+                Action[i] = *ptr;
+                printf("%c", Action[i]);
+            }
+            printf("\n");
+        }
+        
+        if (strcmp(str_pot, ptr) == 0)
+        {
+            /*跳过“\ntotal pot: ”，直接读取pot数值*/
+            ptr += 12;
             printf("Pot:");
             for (i = 0; *ptr != ' '; ++ptr, ++i) {
                 Pot[i] = *ptr;
                 printf("%c", Pot[i]);
             }
             printf("\n");
-            
-            break;
         }
     }
 }
