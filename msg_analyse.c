@@ -1,3 +1,11 @@
+//
+//  main.c
+//  各种测试用
+//
+//  Created by mac on 2/13/15.
+//  Copyright (c) 2015 mac. All rights reserved.
+//
+
 /*解析通讯信息v0.1版，目前可解析hold，inquire，flop，turn，river信息。原理：使用strtok函数将缓冲区信息切割成单个的字符串，然后进行筛选匹配；
  由于牌的内容格式均为 color point，所以我们直接在game主函数里面写一个解析花色和点数的函数即可；
  Ps：目前只支持解析以上信息，需要某个信息，再添加即可*/
@@ -46,7 +54,7 @@ void analy_hlod(char *str)
 int main()
 {
     /*根据收到的server信息格式，测试各解析函数*/
-    char inquire_buffer[] = {"inquire/ \n7777 1850 8000 50 fold \n4444 1850 8000 0 check \n6666 1850 8000 0 all_in \n2222 1850 8000 0 raise \n1111 1850 8000 0 call \n3333 1850 8000 0 fold \n5555 1950 8000 0 fold \n8888 1900 8000 100 blind \ntotal pot: 800 \ninquire \n"};
+    char inquire_buffer[] = {"inquire/ \n7777 1850 8000 50 fold \n4444 1850 8000 0 check \n6666 1850 8000 0 all_in \n2222 1850 8000 0 raise \n1111 1850 8000 0 call \n3333 1850 8000 0 fold \n5555 1950 8000 0 fold \n8888 1900 8000 100 blind \ntotal pot: 1000 \ninquire \n"};
     char flop_buffer[] = {"flop/ \nCLUBS A \nCLUBS Q \nDIAMONDS 3 \n/flop \n"};
     char turn_And_river_buffer[] = {"river/ \nSPADES 7 \n/river \n"};
     char hold_buffer[] = {"hold/ \nCLUBS K \nCLUBS 4 \n/hold \n"};
@@ -94,8 +102,8 @@ void analy_flop(char *str)
     {
         printf("card_flop0:");
         for (i = 0; *ptr != '\0'; ++ptr, ++i) {
-            card_flop0[i] = *ptr;
-            printf("%c", card_flop0[i]);
+        card_flop0[i] = *ptr;
+        printf("%c", card_flop0[i]);
         }
         printf("\n");
         
