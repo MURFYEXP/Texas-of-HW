@@ -88,12 +88,12 @@ char *analy_blind(char *str)
 {
     char *ptr;
     char str_blind[] = {"\n/blind"};
-    /*用“\n”分割buffer信息*/
+    /*用“ ”分割buffer信息*/
     char *delim = " ";
     strtok(str, delim);
     while ( (ptr = strtok(NULL, delim)) != NULL )
     {
-        /*跳过“\n/blind \n”,得到turn信息的尾指针*/
+        /*跳过“\n/blind \n”,得到blind信息的尾指针*/
         if (strcmp(str_blind, ptr) == 0) {
             ptr += 9;
             break;
@@ -107,12 +107,12 @@ char *analy_showdown(char *str)
 {
     char *ptr;
     char str_show[] = {"\n/showdown"};
-    /*用“\n”分割buffer信息*/
+    /*用“ ”分割buffer信息*/
     char *delim = " ";
     strtok(str, delim);
     while ( (ptr = strtok(NULL, delim)) != NULL )
     {
-        /*跳过“\n/showdown \n”,得到turn信息的尾指针*/
+        /*跳过“\n/showdown \n”,得到showdown信息的尾指针*/
         if (strcmp(str_show, ptr) == 0) {
             ptr += 12;
             break;
@@ -125,12 +125,12 @@ char *analy_pot(char *str)
 {
     char *ptr;
     char str_pot[] = {"\n/pot-win"};
-    /*用“\n”分割buffer信息*/
+    /*用“ ”分割buffer信息*/
     char *delim = " ";
     strtok(str, delim);
     while ( (ptr = strtok(NULL, delim)) != NULL )
     {
-        /*跳过“\n/pot \n”,得到turn信息的尾指针*/
+        /*跳过“\n/pot \n”,得到pot信息的尾指针*/
         if (strcmp(str_pot, ptr) == 0) {
             ptr += 11;
             break;
@@ -143,12 +143,12 @@ char *analy_seat(char *str)
 {
     char *ptr;
     char str_seat[] = {"\n/seat"};
-    /*用“\n”分割buffer信息*/
+    /*用“ ”分割buffer信息*/
     char *delim = " ";
     strtok(str, delim);
     while ( (ptr = strtok(NULL, delim)) != NULL )
     {
-        /*跳过“\n/seat \n”,得到turn信息的尾指针*/
+        /*跳过“\n/seat \n”,得到seat信息的尾指针*/
         if (strcmp(str_seat, ptr) == 0) {
             ptr += 8;
             break;
