@@ -11,10 +11,152 @@
  Ps：目前只支持解析以上信息，需要某个信息，再添加即可*/
 #include<stdio.h>
 #include<string.h>
-char *analy_hlod(char *str);
+char *analy_hold(char *str);
 char *analy_inquire(char *str);
 char *analy_flop(char *str);
 char *analy_turn_And_river(char *str);
+char *analy_seat(char *str);
+char *analy_showdown(char *str);
+char *analy_blind(char *str);
+char *analy_pot(char *str);
+void msg_handle(char *str);
+char *msg_analyse(char *p_bug);
+
+void msg_handle(char *str)
+{
+    char *ptr;
+    char *ptr_msg;
+    
+    ptr = msg_analyse(str);
+    /*粘包信息的处理：解析接收到的信息包，遇到字符串结束符跳出循环*/
+    while(*ptr != '\0')
+    {
+        ptr_msg = msg_analyse(ptr);
+        ptr = ptr_msg;
+    }
+}
+
+static char *p_return;
+char *msg_analyse(char *p_bug)
+{
+    switch (*p_bug) {
+        case 'i':
+            p_return = analy_inquire(p_bug);
+            break;
+            
+        case 'f':
+            p_return = analy_flop(p_bug);
+            break;
+            
+        case 't':
+            p_return = analy_turn_And_river(p_bug);
+            break;
+            
+        case 'r':
+            p_return = analy_turn_And_river(p_bug);
+            break;
+            
+        case 'h':
+            p_return = analy_hold(p_bug);
+            break;
+            
+        case 'b':
+            p_return = analy_blind(p_bug);
+            break;
+            
+        case 's':
+            if ( *(++p_bug) == 'e') {
+                p_return = analy_seat(p_bug);
+            }
+            else
+            {
+                p_return = analy_showdown(p_bug);
+            }
+            break;
+            
+        case 'p':
+            p_return = analy_pot(p_bug);
+            break;
+            
+        default:
+            break;
+    }
+    return p_return;
+}
+
+char *analy_blind(char *str)
+{
+    char *ptr;
+    char str_blind[] = {"\n/blind"};
+    /*用“\n”分割buffer信息*/
+    char *delim = " ";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        /*跳过“\n/blind \n”,得到turn信息的尾指针*/
+        if (strcmp(str_blind, ptr) == 0) {
+            ptr += 9;
+            break;
+        }
+    }
+    return ptr;
+}
+
+
+char *analy_showdown(char *str)
+{
+    char *ptr;
+    char str_show[] = {"\n/showdown"};
+    /*用“\n”分割buffer信息*/
+    char *delim = " ";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        /*跳过“\n/showdown \n”,得到turn信息的尾指针*/
+        if (strcmp(str_show, ptr) == 0) {
+            ptr += 12;
+            break;
+        }
+    }
+    return ptr;
+}
+
+char *analy_pot(char *str)
+{
+    char *ptr;
+    char str_pot[] = {"\n/pot-win"};
+    /*用“\n”分割buffer信息*/
+    char *delim = " ";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        /*跳过“\n/pot \n”,得到turn信息的尾指针*/
+        if (strcmp(str_pot, ptr) == 0) {
+            ptr += 11;
+            break;
+        }
+    }
+    return ptr;
+}
+
+char *analy_seat(char *str)
+{
+    char *ptr;
+    char str_seat[] = {"\n/seat"};
+    /*用“\n”分割buffer信息*/
+    char *delim = " ";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        /*跳过“\n/seat \n”,得到turn信息的尾指针*/
+        if (strcmp(str_seat, ptr) == 0) {
+            ptr += 8;
+            break;
+        }
+    }
+    return ptr;
+}
+
 
 /*解析转牌，河牌消息，一个one_hold数组保存一张手牌内容，方便策略函数传参调用*/
 char one_card[10] = {'\0'};
@@ -186,7 +328,7 @@ char *analy_inquire(char *str)
 /*解析手牌消息，一个card_hold数组保存一张手牌内容，方便策略函数传参调用*/
 char card_hold0[10] = {'\0'};
 char card_hold1[10] = {'\0'};
-char *analy_hlod(char *str)
+char *analy_hold(char *str)
 {
     int i;
     char *ptr;
