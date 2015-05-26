@@ -238,13 +238,11 @@ char *analy_flop(char *str)
     return ptr;
 }
 
-/*解析请求消息，用数组分别保存Pid, Jetton, Money, Bet, Action, Pot信息，方便策略函数传参调用*/
-char Pid[10] = {'\0'};
-char Jetton[10] = {'\0'};
-char Money[10] = {'\0'};
-char Bet[10] = {'\0'};
+/*解析请求消息，用数组分别保存Action, Pot信息，方便策略函数传参调用*/
 char Action[10] = {'\0'};
 char Pot[10] = {'\0'};
+char callNum[10] = {'\0'};
+int foldedNum = 0;
 char *analy_inquire(char *str)
 {
     int i;
@@ -252,48 +250,21 @@ char *analy_inquire(char *str)
     /*用“ ”分割buffer信息*/
     char *delim = " ";
     /*假设我们的程序*/
-    char str_pid[] = {"\n7777"};
+    char str_act[] = {"fold"};
     char str_pot[] = {"\ntotal"};
     char str_inquire[] = {"\n/inquire"};
     strtok(str, delim);
+    int cnt = 0;
     while ( (ptr = strtok(NULL, delim)) != NULL )
     {
-        if ( strcmp(str_pid, ptr) == 0 )
-        {
-            printf("i get it\n");
-            
-            ++ptr;
-            printf("Pid:");
+        ++cnt;
+        if (cnt == 4) {
+            printf("callNum:");
             for (i = 0; *ptr != '\0'; ++ptr, ++i) {
-                Pid[i] = *ptr;
+                callNum[i] = *ptr;
             }
-            printf("%s", Pid);
-            printf("\n");
-            
-            ++ptr;
-            printf("Jetton:");
-            for (i = 0; *ptr != ' '; ++ptr, ++i) {
-                Jetton[i] = *ptr;
-            }
-            printf("%s", Jetton);
-            printf("\n");
-            
-            ++ptr;
-            printf("Money:");
-            for (i = 0; *ptr != ' '; ++ptr, ++i) {
-                Money[i] = *ptr;
-            }
-            printf("%s", Money);
-            printf("\n");
-            
-            ++ptr;
-            printf("Bet:");
-            for (i = 0; *ptr != ' '; ++ptr, ++i) {
-                Bet[i] = *ptr;
-            }
-            printf("%s", Bet);
-            printf("\n");
-            
+            printf("%s\n", callNum);
+
             ++ptr;
             printf("Action:");
             for (i = 0; *ptr != ' '; ++ptr, ++i) {
@@ -303,6 +274,11 @@ char *analy_inquire(char *str)
             printf("\n");
         }
         
+        if (strcmp(str_act, ptr) == 0)
+        {
+            ++foldedNum;
+        }
+
         if (strcmp(str_pot, ptr) == 0)
         {
             /*跳过“\ntotal pot: ”，直接读取pot数值*/
@@ -322,6 +298,7 @@ char *analy_inquire(char *str)
             break;
         }
     }
+    printf("foldedNum:%d\n", foldedNum);
     return ptr;
 }
 
