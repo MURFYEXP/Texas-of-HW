@@ -19,6 +19,7 @@ extern char Jetton[20];
 extern char Money[20];
 extern char Bet[20];
 extern char Action[20];
+extern char Pot[20];
 extern char turn_card[20];
 extern char river_card[20];
 /*如需跟注数*/
