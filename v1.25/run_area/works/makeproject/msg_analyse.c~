@@ -1,0 +1,332 @@
+/*解析通讯信息v0.1版，目前可解析hold，inquire，flop，turn，river信息。原理：使用strtok函数将缓冲区信息切割成单个的字符串，然后进行筛选匹配；
+ 由于牌的内容格式均为 color point，所以我们直接在game主函数里面写一个解析花色和点数的函数即可；
+ Ps：目前只支持解析以上信息，需要某个信息，再添加即可*/
+#include<stdio.h>
+#include<string.h>
+//#include "global.h"
+char *analy_hlod(char *str);
+char *analy_inquire(char *str);
+char *analy_flop(char *str);
+char *analy_turn_And_river(char *str);
+char *analy_seat(char *str);
+char *analy_pot(char *str);
+char *analy_showdown(char *str);
+char *analy_blind(char *str);
+void five_card(void);
+void seven_card(void);
+
+int n = 0;
+
+char a[5][12];
+void five_card(void)
+{
+    strcpy (a, card_hold0);
+    strcat (a, card_hold1);
+    strcat (a, card_flop0);
+    strcat (a, card_flop1);
+    strcat (a, card_flop2);
+    puts (a);
+}
+
+
+char temp[7][12];
+void seven_card(void)
+{
+    strcpy (temp, a);
+    strcat (temp, turn_card);
+    strcat (temp, river_card);
+    puts (temp);
+}
+
+char *analy_blind(char *str)
+{
+    char *ptr;
+    char str_blind[] = {"\n/blind"};
+    /*用“\n”分割buffer信息*/
+    char *delim = " ";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        /*跳过“\n/blind \n”,得到turn信息的尾指针*/
+        if (strcmp(str_blind, ptr) == 0) {
+            ptr += 9;
+            break;
+        }
+    }
+    return ptr;
+}
+
+
+char *analy_showdown(char *str)
+{
+    char *ptr;
+    char str_show[] = {"\n/showdown"};
+    /*用“\n”分割buffer信息*/
+    char *delim = " ";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        /*跳过“\n/showdown \n”,得到turn信息的尾指针*/
+        if (strcmp(str_show, ptr) == 0) {
+            ptr += 12;
+            break;
+        }
+    }
+    return ptr;
+}
+
+char *analy_pot(char *str)
+{
+    char *ptr;
+    char str_pot[] = {"\n/pot-win"};
+    /*用“\n”分割buffer信息*/
+    char *delim = " ";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        /*跳过“\n/pot \n”,得到turn信息的尾指针*/
+        if (strcmp(str_pot, ptr) == 0) {
+            ptr += 11;
+            break;
+        }
+    }
+    return ptr;
+}
+
+char *analy_seat(char *str)
+{
+    char *ptr;
+    char str_seat[] = {"\n/seat"};
+    /*用“\n”分割buffer信息*/
+    char *delim = " ";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        /*跳过“\n/seat \n”,得到turn信息的尾指针*/
+        if (strcmp(str_seat, ptr) == 0) {
+            ptr += 8;
+            break;
+        }
+    }
+    return ptr;
+}
+
+
+/*解析转牌，河牌消息，一个one_hold数组保存一张手牌内容，方便策略函数传参调用*/
+char river_card[20] = {'\0'};
+char *analy_river(char *str)
+{
+    int i;
+    char *ptr;
+    char str_river[] = {"\n/river"};
+    /*用“\n”分割buffer信息*/
+    char *delim = "\n";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        printf("river_card:");
+        for (i = 0; *ptr != '\0'; ++ptr, ++i) {
+            river_card[i] = *ptr;
+        }
+        printf("%s", river_card);
+        printf("\n");
+        
+        /*跳过“\n/river \n”,得到river信息的尾指针*/
+        if (strcmp(str_river, ptr)) {
+            ptr += 9;
+            break;
+        }
+    }
+    ++n;
+    seven_card();
+    return ptr;
+}
+
+
+
+char turn_card[20] = {'\0'};
+char *analy_turn(char *str)
+{
+    int i;
+    char *ptr;
+    char str_turn[] = {"\n/turn"};
+    /*用“\n”分割buffer信息*/
+    char *delim = "\n";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        printf("turn_card:");
+        for (i = 0; *ptr != '\0'; ++ptr, ++i) {
+            turn_card[i] = *ptr;
+        }
+        printf("%s", turn_card);
+        printf("\n");
+        
+        /*跳过“\n/turn \n”,得到turn信息的尾指针*/
+        if (strcmp(str_turn, ptr)) {
+            ptr += 8;
+            break;
+        }
+    }
+    ++n;
+    return ptr;
+}
+
+
+/*解析公牌消息，一个card_flop数组保存一张手牌内容，方便策略函数传参调用*/
+char card_flop0[20] = {'\0'};
+char card_flop1[20] = {'\0'};
+char card_flop2[20] = {'\0'};
+char *analy_flop(char *str)
+{
+    int i;
+    char *ptr;
+    char str_flop[] = {"\n/flop"};
+    /*用“\n”分割buffer信息*/
+    char *delim = "\n";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        printf("card_flop0:");
+        for (i = 0; *ptr != '\0'; ++ptr, ++i) {
+            card_flop0[i] = *ptr;
+            printf("%c", card_flop0[i]);
+        }
+        printf("\n");
+        
+        ++ptr;
+        printf("card_flop1:");
+        for (i = 0; *ptr != '\n'; ++ptr, ++i) {
+            card_flop1[i] = *ptr;
+            printf("%c", card_flop1[i]);
+        }
+        printf("\n");
+        
+        ++ptr;
+        printf("card_flop2:");
+        for (i = 0; *ptr != '\n'; ++ptr, ++i) {
+            card_flop2[i] = *ptr;
+            printf("%c", card_flop2[i]);
+        }
+        printf("\n");
+        
+        /*跳过“\n/flop \n”,得到flop信息的尾指针*/
+        if (strcmp(str_flop, ptr)) {
+            ptr += 8;
+            break;
+        }
+    }
+    n += 3;
+    five_card();
+    return ptr;
+}
+
+
+/*解析请求消息，用数组分别保存Pid, Jetton, Money, Bet, Action, Pot信息，方便策略函数传参调用*/
+char Action[20] = {'\0'};
+char Pot[20] = {'\0'};
+char callNum[10] = {'\0'};
+int is_inquired = 0;
+int foldedNum = 0;
+char *analy_inquire(char *str)
+{
+    int i;
+    char *ptr;
+    /*用“ ”分割buffer信息*/
+    char *delim = " ";
+    /*假设我们的程序*/
+    char str_act[] = {"fold"};
+    char str_pot[] = {"\ntotal"};
+    char str_inquire[] = {"\n/inquire"};
+    strtok(str, delim);
+    int cnt = 0;
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        ++cnt;
+        if (cnt == 4) {
+            printf("callNum:");
+            for (i = 0; *ptr != '\0'; ++ptr, ++i) {
+                callNum[i] = *ptr;
+            }
+            printf("%s\n", callNum);
+
+            ++ptr;
+            printf("Action:");
+            for (i = 0; *ptr != ' '; ++ptr, ++i) {
+                Action[i] = *ptr;
+            }
+            printf("%s", Action);
+            printf("\n");
+        }
+        
+        if (strcmp(str_act, ptr) == 0)
+        {
+            ++foldedNum;
+        }
+                
+        if (strcmp(str_pot, ptr) == 0)
+        {
+            /*跳过“\ntotal pot: ”，直接读取pot数值*/
+            ptr += 12;
+            printf("Pot:");
+            for (i = 0; *ptr != ' '; ++ptr, ++i) {
+                Pot[i] = *ptr;
+            }
+            printf("%s", Pot);
+            printf("\n");
+        }
+        
+        /*跳过"\n/inquire \n”,得到inquire信息的尾指针*/
+        if (strcmp(str_inquire, ptr) == 0)
+        {
+            ptr += 11;
+            break;
+        }
+    }
+    
+    is_inquired = 1;
+    printf("foldedNum:%d\n", foldedNum);
+    return ptr;
+}
+
+
+/*解析手牌消息，一个card_hold数组保存一张手牌内容，方便策略函数传参调用*/
+char card_hold0[20] = {'\0'};
+char card_hold1[20] = {'\0'};
+char *analy_hlod(char *str)
+{
+    int i;
+    char *ptr;
+    char str_hold[] = {"\n/hold"};
+    /*用“\n”分割buffer信息*/
+    char *delim = "\n";
+    strtok(str, delim);
+    while ( (ptr = strtok(NULL, delim)) != NULL )
+    {
+        printf("card_hold0:");
+        for (i = 0; *ptr != '\0'; ++ptr, ++i) {
+            card_hold0[i] = *ptr;
+            printf("%c", card_hold0[i]);
+        }
+        printf("\n");
+        
+        ++ptr;
+        printf("card_hold1:");
+        for (i = 0; *ptr != '\n'; ++ptr, ++i) {
+            card_hold1[i] = *ptr;
+            printf("%c", card_hold1[i]);
+        }
+        printf("\n");
+        
+        /*跳过“\n/hold \n”,得到hold信息的尾指针*/
+        if (strcmp(str_hold, ptr)) {
+            ptr += 8;
+            break;
+        }
+    }
+    return ptr;
+}
+
+
+
+

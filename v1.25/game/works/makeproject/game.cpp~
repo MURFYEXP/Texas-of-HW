@@ -1,0 +1,288 @@
+//
+//  game.cpp
+//  Texas_and_fuck
+//
+//  Created by mac on 5/28/15.
+//  Copyright (c) 2015 mac. All rights reserved.
+//
+
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "msg_analyes.h"
+//#include "global.h"
+#include "pokersort.h"
+#include "winpro.h"
+#include "action.h"
+
+/* 处理server的消息 */
+int on_server_message(int length, const char* buffer)
+{
+    printf("Recieve Data From Server(%s)\n", buffer);
+    return 0;
+}
+
+char card_flop0[20];
+char card_flop1[20];
+char card_flop2[20];
+char card_hold0[20];
+char card_hold1[20];
+//extern char action[20];
+char Pot[20];
+char turn_card[20];
+char river_card[20];
+char temp[7];
+int foldedNum;
+
+int is_inquired;
+int is_holded;
+int is_floped;
+int is_turned;
+int is_rivered;
+int thisturn = 100;
+int m_socket_id = -1;
+
+
+/*如需跟注数*/
+char callNum[10];
+/*明牌*/
+//extern char a[5];
+/*明牌数*/
+int n;
+int playn;
+
+
+int main(int argc, char *argv[])
+{
+    /*
+     if (argc != 6)
+     {
+     printf("Usage: ./%s server_ip server_port my_ip my_port my_id\n", argv[0]);
+     return -1;
+     }
+     
+     /* 获取输入参数
+     in_addr_t server_ip = inet_addr(argv[1]);
+     in_port_t server_port = htons(atoi(argv[2]));
+     in_addr_t my_ip = inet_addr(argv[3]);
+     in_port_t my_port = htons(atoi(argv[4]));
+     int my_id = atoi(argv[5]);
+     
+     /* 创建socket
+     m_socket_id = socket(AF_INET, SOCK_STREAM, 0);
+     if(m_socket_id < 0)
+     {
+     printf("init socket failed!\n");
+     return -1;
+     }
+     
+     /* 设置socket选项，地址重复使用，防止程序非正常退出，下次启动时bind失败
+     int is_reuse_addr = 1;
+     setsockopt(m_socket_id, SOL_SOCKET, SO_REUSEADDR, (const char*)&is_reuse_addr, sizeof(is_reuse_addr));
+     
+     /* 绑定指定ip和port，不然会被server拒绝
+     struct sockaddr_in my_addr;
+     bzero(&my_addr, sizeof(my_addr));
+     my_addr.sin_family = AF_INET;
+     my_addr.sin_addr.s_addr = my_ip;
+     my_addr.sin_port = my_port;
+     if(bind(m_socket_id, (struct sockaddr*)&my_addr, sizeof(my_addr)))
+     {
+     printf("bind failed!\n");
+     return -1;
+     }
+     struct sockaddr_in server_addr;
+     bzero(&server_addr, sizeof(server_addr));
+     server_addr.sin_family = AF_INET;
+     server_addr.sin_addr.s_addr = server_ip;
+     server_addr.sin_port = server_port;
+     while(connect(m_socket_id, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0)
+     {
+     usleep(100*1000); /* sleep 100ms, 然后重试，保证无论server先起还是后起，都不会有问题
+     }
+     
+     /* 向server注册
+     char reg_msg[50] = {'\0'};
+     snprintf(reg_msg, sizeof(reg_msg) - 1, "reg: %d %s \n", my_id, "tt");
+     send(m_socket_id, reg_msg, strlen(reg_msg) + 1, 0);
+     
+     /*向server发送action信息
+     char send_msg[50] = {'\0'};
+     snprintf(send_msg, sizeof(send_msg) - 1, "all_in");
+     
+     FILE *fp;
+     fp = fopen("/home/yow-yow/Desktop/data", "w");
+     char *ptr;*/
+    
+    // while(1)
+    //{
+    char buffer[2048] = {"seat/ \nbutton: 6666 2000 8000 \nsmall blind: 2222 2000 8000 \nbig blind: 1111 2000 8000 \n4444 2000 8000 \n7777 2000 8000 \n5555 2000 8000 \n8888 2000 8000 \n3333 2000 8000 \n/seat \n"};
+    
+    char inquire_buffer[] = {"hold/ \nDIAMONDS 10 \nDIAMONDS 8 \n/hold \ninquire/ \n7777 0 8000 2000 all_in \n3333 0 8000 2000 all_in \n6666 0 8000 2000 all_in \n1111 0 8000 2000 all_in \n8888 1900 8000 100 blind \n2222 1950 8000 50 blind \ntotal pot: 8150 \n/inquire \nflop \nSPADES 4 \nCLUBS Q \nHEARTS 6 \n/flop \nturn/ \nDIAMONDS 5 \n/turn \nriver \nDIAMONDS A \n/river \n"};
+    
+    char hold_buffer[] = {"hold/ \nDIAMONDS 10 \nDIAMONDS 8 \n/hold \n"};
+     /*
+     data:
+     blind/
+     2222: 50
+     1111: 100
+     /blind
+     
+     data:
+     hold/
+     CLUBS 10 data:seat/
+     button: 5555 2000 8000
+     small blind: 2222 2000 8000
+     big blind: 8888 2000 8000
+     1111 2000 8000
+     6666 2000 8000
+     3333 2000 8000
+     7777 2000 8000
+     4444 2000 8000
+     /seat
+     
+     data:blind/
+     2222: 50
+     8888: 100
+     /blind
+     
+     data:hold/
+     DIAMONDS J
+     DIAMONDS 9
+     /hold
+     
+     data:inquire/
+     7777 0 8000 2000 all_in
+     3333 0 8000 2000 all_in
+     6666 0 8000 2000 all_in
+     1111 0 8000 2000 all_in
+     8888 1900 8000 100 blind
+     2222 1950 8000 50 blind
+     total pot: 8150
+     /inquire
+     
+     data:flop/
+     SPADES 4
+     CLUBS Q
+     HEARTS 6
+     /flop
+     
+     data:turn/
+     DIAMONDS 5
+     /turn
+     river/
+     DIAMONDS A
+     /river
+     showdown/
+     common/
+     SPADES 4
+     CLUBS Q
+     HEARTS 6
+     DIAMONDS 5
+     DIAMONDS A
+     /common
+     4: 2222 SPADES K SPADES 3 HIGH_CARD
+     4: 8888 HEARTS K DIAMONDS 3 HIGH_CARD
+     7: 1111 SPADES 9 HEARTS 2 HIGH_CARD
+     1: 6666 HEARTS A HEARTS 9 ONE_PAIR
+     2: 3333 HEARTS 3 SPADES 6 ONE_PAIR
+     3: 7777 DIAMONDS K HEARTS 7 HIGH_CARD
+     5: 4444 DIAMONDS J DIAMONDS 9 HIGH_CARD
+     6: 5555 SPADES 10 CLUBS 7 HIGH_CARD
+     /showdown
+     pot-win/
+     6666: 16000
+     /pot-win
+     seat/
+     button: 2222 2000 6000
+     small blind: 8888 2000 6000
+     big blind: 1111 2000 6000
+     6666 16000 8000
+     3333 2000 6000
+     7777 2000 6000
+     4444 2000 6000
+     5555 2000 6000
+     /seat
+     blind/
+     8888: 50
+     1111: 100
+     /blind
+     hold/
+     CLUBS 5
+     SPADES 8
+     /hold
+     
+     data:inquire/
+     7777 0 6000 2000 all_in
+     3333 0 6000 2000 all_in
+     6666 16000 8000 0 fold
+     1111 1900 6000 100 blind
+     8888 1950 6000 50 blind
+     total pot: 4150
+     /inquire
+     
+     data:flop/
+     CLUBS A
+     HEARTS 7
+     DIAMONDS A
+     /flop
+     
+     data:turn/
+     HEARTS 9
+     /turn
+     river/
+     HEARTS K
+     /river
+     showdown/
+     common/
+     CLUBS A
+     HEARTS 7
+     DIAMONDS A
+     HEARTS 9
+     HEARTS K
+     /common
+     2: 8888 CLUBS J HEARTS Q ONE_PAIR
+     6: 1111 SPADES 10 SPADES 2 ONE_PAIR
+     5: 3333 SPADES J DIAMONDS 6 ONE_PAIR
+     3: 7777 DIAMONDS 10 DIAMONDS Q ONE_PAIR
+     7: 4444 CLUBS 5 SPADES 8 ONE_PAIR
+     4: 5555 SPADES 3 CLUBS Q ONE_PAIR
+     1: 2222 HEARTS J HEARTS 2 FLUSH
+     /showdown
+     pot-win/
+     2222: 14000
+     /pot-win "};
+     */
+    //int length = recv(m_socket_id, buffer, sizeof(buffer) - 1, 0);
+    /*将接受到的请求信息写入文件，用于解析信息采取相应的响应*/
+    //fprintf(fp, "data:%s\n", buffer);
+    
+    // if(length > 0)
+    //{
+    /* on_server_message返回-1（比如收到game over消息），则跳出循环，关闭socket，安全退出程序 */
+    //  if (-1 == on_server_message(length, buffer))
+    // {
+    //   break;
+    //}
+    
+    is_inquired = 0;
+    is_holded   = 0;
+    is_floped   = 0;
+    is_turned   = 0;
+    is_rivered  = 0;
+    is_holded   = 0;
+    msg_handle(hold_buffer);
+    if ( (is_inquired == 1) || (is_holded == 1) ||
+         (is_rivered == 1)  || (is_turned == 1) ||
+         (is_floped == 1)){
+        Action();
+    }
+    
+    /* 关闭socket */
+    // close(m_socket_id);
+}

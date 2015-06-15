@@ -1,0 +1,13 @@
+char *analy_hlod(char *str);
+char *analy_inquire(char *str);
+char *analy_flop(char *str);
+char *analy_turn(char *str);
+char *analy_river(char *str);
+char *analy_seat(char *str);
+char *analy_pot(char *str);
+char *analy_showdown(char *str);
+char *analy_blind(char *str);
+
+void seven_card(void);
+void five_card(void);
+

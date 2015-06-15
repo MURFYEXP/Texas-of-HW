@@ -1,0 +1,9 @@
+Pid, Money, HandNum, ShowDownNum, NetWin, NutHand, Rank, StatusPid, Money, HandNum, ShowDownNum, NetWin, NutHand, Rank, StatusPid, Money, HandNum, ShowDownNum, NetWin, NutHand, Rank, Status
+5555, 0, 221, 12, -10000, FULL_HOUSE, 3, NORMAL
+7777, 750, 355, 11, -9250, FULL_HOUSE, 1, NORMAL
+8888, 50, 355, 3, -9950, THREE_OF_A_KIND, 2, NORMAL
+1111, -, -, -, -, -, -, UNCONNECTED
+2222, -, -, -, -, -, -, UNCONNECTED
+3333, -, -, -, -, -, -, UNCONNECTED
+4444, -, -, -, -, -, -, UNCONNECTED
+6666, -, -, -, -, -, -, UNCONNECTED

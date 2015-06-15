@@ -1,0 +1,5 @@
+CC = g++
+CFLAGS = -g -o -lpthread
+game:  game.o  msg_analyse.o  pokersort.o winpro.o
+clean:
+	rm -f game.o msg_analyse.o

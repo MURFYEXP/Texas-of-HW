@@ -1,0 +1,111 @@
+#include<stdio.h>
+#include<string.h>
+#include "msg_analyse.h"
+int len = 0;
+char cpy_buffer[];
+char *msg_analyse(char *p_bug);
+
+void msg_handle(char *str)
+{
+    char *ptr, *p, *a;
+    char *delim = " ";
+    //p = strtok(str, delim);
+    ptr = msg_analyse(str);
+    // msg_analyse();
+   //  printf("ptr:%c",*(ptr));
+    //a = analy_flop(ptr);
+   // printf("a:%c",*a);
+   // analy_turn_And_river(a);
+    // printf("b:%d",*(b+8));
+    
+    do{
+    //++ptr;
+    //printf("ptr:%c\n",*ptr);
+       a = msg_analyse(ptr);
+    //printf("a:%c\n",*a);
+      ptr = a;
+    }while(*ptr != '/0');
+    printf("lalala");
+   // ++ptr;
+    // msg_analyse(ptr);
+    //ptr
+    //while (ptr != NULL) {
+    //  ptr = msg_analyse(ptr);
+    //}
+    //ptr = msg_analyse(p);
+    
+    /*
+     while ( (ptr = strtok(NULL, de)) != NULL )
+     {
+     printf("lalalal");
+     ptr += 3;
+     msg_analyse(ptr);
+     }
+     */
+}
+
+char *point;
+char *msg_analyse(char *p_bug)
+{
+    /*处理正常包*/
+    switch (*p_bug) {
+        case 'i':
+            //msg_handle(buffer, str_inquire, 12);
+            point = analy_inquire(p_bug);
+            break;
+            
+        case 'f':
+            //msg_handle(buffer, str_flop, 9);
+            point = analy_flop(p_bug);
+            break;
+            
+        case 't':
+            //msg_handle(buffer, str_turn, 9);
+            analy_turn_And_river(p_bug);
+            break;
+            
+        case 'r':
+            //msg_handle(buffer, str_river, 10);
+            point = analy_turn_And_river(p_bug);
+            break;
+            
+        case 'h':
+            //msg_handle(buffer, str_hold, 9);
+            //printf("tag:%d\n", tag);
+            point=analy_hlod(p_bug);
+            break;
+            
+        default:
+            break;
+    }
+    return point;
+}
+
+int main()
+{
+    /*根据收到的server信息格式，测试各解析函数*/
+    char buffer[] = {"inquire/ \n7777 1850 8000 50 fold \n4444 1850 8000 0 check \n6666 1850 8000 0 all_in \n2222 1850 8000 0 raise \n1111 1850 8000 0 call \n3333 1850 8000 0 fold \n5555 1950 8000 0 fold \n8888 1900 8000 100 blind \ntotal pot: 1000 \n/inquire \nflop/ \nCLUBS A \nCLUBS Q \nDIAMONDS 3 \n/flop \nriver/ \nSPADES 7 \n/river \n"};
+    //char flop_buffer[] = {"flop/ \nCLUBS A \nCLUBS Q \nDIAMONDS 3 \n/flop \n"};
+    //char turn_And_river_buffer[] = {"river/ \nSPADES 7 \n/river \n"};
+    //char hold_buffer[] = {"hold/ \nCLUBS K \nCLUBS 4 \n/hold \n"};
+    
+    char *p_bug, *ptr;
+    strcpy(cpy_buffer, buffer);
+    //ptr = analy_flop(flop_buffer);
+    //if (*ptr == '\0') {
+    //  printf("lalalal\n");
+    //}
+    // printf("len:%c\n", *ptr);
+    
+    
+    char *delim = " ";
+   // p_bug = strtok(buffer, delim);
+    //len = sizeof(buffer);
+    //printf("len:%d\n", len);
+    //printf("%s\n", &buffer[500]);
+    msg_handle(buffer);
+    
+}
+
+
+

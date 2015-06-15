@@ -1,0 +1,15 @@
+
+
+===VERSION 1.25===
+---GAME START @ 2015-5-26-0-49-27---
+
+wait registration for 30 seconds
+close registration
+game-over
+
+===VERSION 1.25===
+---GAME START @ 2015-5-26-0-52-9---
+
+wait registration for 30 seconds
+close registration
+game-over

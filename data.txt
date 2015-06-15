@@ -1,0 +1,288 @@
+data:seat/ 
+button: 6666 2000 2000 
+small blind: 1111 2000 2000 
+big blind: 2222 2000 2000 
+7777 2000 2000 
+3333 2000 2000 
+5555 2000 2000 
+4444 2000 2000 
+8888 2000 2000 
+/seat 
+
+data:blind/ 
+1111: 20 
+2222: 40 
+/blind 
+
+data:hold/ 
+SPADES 4 
+HEARTS 2 
+/hold 
+
+data:inquire/ 
+2222 1960 2000 40 blind 
+1111 1980 2000 20 blind 
+total pot: 60 
+/inquire 
+
+data:inquire/ 
+2222 1640 2000 360 raise 
+1111 1680 2000 320 raise 
+6666 1720 2000 280 raise 
+8888 1760 2000 240 raise 
+4444 1800 2000 200 raise 
+5555 1840 2000 160 raise 
+3333 1880 2000 120 raise 
+7777 1920 2000 80 raise 
+total pot: 1760 
+/inquire 
+
+data:inquire/ 
+2222 1320 2000 680 raise 
+1111 1360 2000 640 raise 
+6666 1400 2000 600 raise 
+8888 1440 2000 560 raise 
+4444 1480 2000 520 raise 
+5555 1520 2000 480 raise 
+3333 1560 2000 440 raise 
+7777 1600 2000 400 raise 
+total pot: 4320 
+/inquire 
+
+data:inquire/ 
+2222 1000 2000 1000 raise 
+1111 1040 2000 960 raise 
+6666 1080 2000 920 raise 
+8888 1120 2000 880 raise 
+4444 1160 2000 840 raise 
+5555 1200 2000 800 raise 
+3333 1240 2000 760 raise 
+7777 1280 2000 720 raise 
+total pot: 6880 
+/inquire 
+
+data:inquire/ 
+2222 680 2000 1320 raise 
+1111 720 2000 1280 raise 
+6666 760 2000 1240 raise 
+8888 800 2000 1200 raise 
+4444 840 2000 1160 raise 
+5555 880 2000 1120 raise 
+3333 920 2000 1080 raise 
+7777 960 2000 1040 raise 
+total pot: 9440 
+/inquire 
+
+data:inquire/ 
+2222 360 2000 1640 raise 
+1111 400 2000 1600 raise 
+6666 440 2000 1560 raise 
+8888 480 2000 1520 raise 
+4444 520 2000 1480 raise 
+5555 560 2000 1440 raise 
+3333 600 2000 1400 raise 
+7777 640 2000 1360 raise 
+total pot: 12000 
+/inquire 
+
+data:inquire/ 
+2222 40 2000 1960 raise 
+1111 80 2000 1920 raise 
+6666 120 2000 1880 raise 
+8888 160 2000 1840 raise 
+4444 200 2000 1800 raise 
+5555 240 2000 1760 raise 
+3333 280 2000 1720 raise 
+7777 320 2000 1680 raise 
+total pot: 14560 
+/inquire 
+
+data:flop/ 
+CLUBS Q 
+DIAMONDS 6 
+DIAMONDS 10 
+/flop 
+
+data:turn/ 
+HEARTS 9 
+/turn 
+
+data:river/ 
+SPADES 9 
+/river 
+
+data:showdown/ 
+common/ 
+CLUBS Q 
+DIAMONDS 6 
+DIAMONDS 10 
+HEARTS 9 
+SPADES 9 
+/common 
+5: 1111 CLUBS K CLUBS 3 ONE_PAIR 
+7: 2222 DIAMONDS 2 CLUBS 4 ONE_PAIR 
+7: 7777 SPADES 4 HEARTS 2 ONE_PAIR 
+4: 3333 CLUBS 2 HEARTS 6 TWO_PAIR 
+1: 5555 SPADES J DIAMONDS 8 STRAIGHT 
+2: 4444 DIAMONDS 3 DIAMONDS 9 THREE_OF_A_KIND 
+6: 8888 HEARTS J CLUBS 5 ONE_PAIR 
+3: 6666 CLUBS 6 DIAMONDS A TWO_PAIR 
+/showdown 
+
+data:pot-win/ 
+5555: 16000 
+/pot-win 
+
+data:seat/ 
+button: 1111 2000 0 
+small blind: 2222 2000 0 
+big blind: 7777 2000 0 
+3333 2000 0 
+5555 16000 2000 
+4444 2000 0 
+8888 2000 0 
+6666 2000 0 
+/seat 
+
+data:blind/ 
+2222: 20 
+7777: 40 
+/blind 
+
+data:hold/ 
+HEARTS 5 
+HEARTS 10 
+/hold 
+
+data:inquire/ 
+2222 1680 0 320 raise 
+1111 1720 0 280 raise 
+6666 1760 0 240 raise 
+8888 1800 0 200 raise 
+4444 1840 0 160 raise 
+5555 15880 2000 120 raise 
+3333 1920 0 80 raise 
+7777 1960 0 40 blind 
+total pot: 1440 
+/inquire 
+
+data:inquire/ 
+2222 1360 0 640 raise 
+1111 1400 0 600 raise 
+6666 1440 0 560 raise 
+8888 1480 0 520 raise 
+4444 1520 0 480 raise 
+5555 15560 2000 440 raise 
+3333 1600 0 400 raise 
+7777 1640 0 360 raise 
+total pot: 4000 
+/inquire 
+
+data:inquire/ 
+2222 1040 0 960 raise 
+1111 1080 0 920 raise 
+6666 1120 0 880 raise 
+8888 1160 0 840 raise 
+4444 1200 0 800 raise 
+5555 15240 2000 760 raise 
+3333 1280 0 720 raise 
+7777 1320 0 680 raise 
+total pot: 6560 
+/inquire 
+
+data:inquire/ 
+2222 720 0 1280 raise 
+1111 760 0 1240 raise 
+6666 800 0 1200 raise 
+8888 840 0 1160 raise 
+4444 880 0 1120 raise 
+5555 14920 2000 1080 raise 
+3333 960 0 1040 raise 
+7777 1000 0 1000 raise 
+total pot: 9120 
+/inquire 
+
+data:inquire/ 
+2222 400 0 1600 raise 
+1111 440 0 1560 raise 
+6666 480 0 1520 raise 
+8888 520 0 1480 raise 
+4444 560 0 1440 raise 
+5555 14600 2000 1400 raise 
+3333 640 0 1360 raise 
+7777 680 0 1320 raise 
+total pot: 11680 
+/inquire 
+
+data:inquire/ 
+2222 80 0 1920 raise 
+1111 120 0 1880 raise 
+6666 160 0 1840 raise 
+8888 200 0 1800 raise 
+4444 240 0 1760 raise 
+5555 14280 2000 1720 raise 
+3333 320 0 1680 raise 
+7777 360 0 1640 raise 
+total pot: 14240 
+/inquire 
+
+data:inquire/ 
+2222 0 0 2000 all_in 
+1111 0 0 2000 
+2222 400 0 1600 raise 
+1111 440 0 1560 raise 
+total pot: 13600 
+/inquire 
+
+data:inquire/ 
+6666 0 0 2000 all_in 
+8888 0 0 2000 all_in 
+4444 0 0 2000 all_in 
+5555 13960 2000 2040 raise 
+3333 0 0 2000 raise 
+7777 40 0 1960 raise 
+2222 80 0 1920 raise 
+1111 120 0 1880 raise 
+total pot: 15800 
+/inquire 
+
+data:flop/ 
+HEARTS 4 
+SPADES 9 
+CLUBS Q 
+/flop 
+
+data:turn/ 
+DIAMONDS 7 
+/turn 
+
+data:river/ 
+DIAMONDS K 
+/river 
+
+data:showdown/ 
+common/ 
+HEARTS 4 
+SPADES 9 
+CLUBS Q 
+DIAMONDS 7 
+DIAMONDS K 
+/common 
+2: 2222 HEARTS 9 DIAMONDS 4 TWO_PAIR 
+6: 7777 HEARTS 5 HEARTS 10 HIGH_CARD 
+3: 3333 HEARTS K DIAMONDS 2 ONE_PAIR 
+5: 5555 DIAMONDS A SPADES 8 HIGH_CARD 
+4: 4444 SPADES 4 CLUBS 6 ONE_PAIR 
+4: 8888 HEARTS 6 CLUBS 4 ONE_PAIR 
+7: 6666 SPADES 3 SPADES 5 HIGH_CARD 
+1: 1111 HEARTS Q DIAMONDS 9 TWO_PAIR 
+/showdown 
+
+data:pot-win/ 
+1111: 16000 
+5555: 40 
+/pot-win 
+
+000 
+5555: 40 
+/pot-win 
